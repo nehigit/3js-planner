@@ -32,6 +32,7 @@ jobs:
         npm install --include=optional  # Force install optional deps
         npm ci
         npm run build --if-present
+        touch dist/.nojekyll
       # npm test
 
     - name: Deploy
