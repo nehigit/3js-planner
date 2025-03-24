@@ -10,24 +10,39 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-deploy:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
+    # Prevent from doubling up while making multiple deployments at the same time
+    concurrency: ci-${{github.ref}}
+    
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: rm -rf node_modules/ package-lock.json
-    - run: npm install --include=optional  # Force install optional deps
-    - run: npm ci
-    - run: npm run build --if-present
-    # - run: npm test
+
+    - name: Install
+      run: |
+        rm -rf node_modules/ package-lock.json
+        npm install --include=optional  # Force install optional deps
+        npm ci
+        npm run build --if-present
+        npm test
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist
+        branch: gh-pages
+        
