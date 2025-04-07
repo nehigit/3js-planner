@@ -17,7 +17,7 @@ export default class World {
     private axesHelper = new THREE.AxesHelper(10)
     private floor = new Floor()
 
-    constructor() {
+    public constructor() {
         this.scene.add(this.axesHelper)
         
         this.debug.debugObject.addCube = () => {

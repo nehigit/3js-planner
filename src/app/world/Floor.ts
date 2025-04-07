@@ -11,7 +11,7 @@ export default class Floor {
     private material!: THREE.Material
     private mesh!: THREE.Mesh
 
-    constructor() {
+    public constructor() {
         // TODO: maybe make the setup functions return objects and assign them above 
         // instead of invoking functions inside constructor??
         this.setupGeometry()
@@ -20,7 +20,7 @@ export default class Floor {
         this.scene.add(this.mesh)
     }
 
-    setupGeometry(): void {
+    private setupGeometry(): void {
         this.geometry = new THREE.PlaneGeometry(
             10,
             10,
@@ -29,13 +29,13 @@ export default class Floor {
         )
     }
 
-    setupMaterial(): void {
+    private setupMaterial(): void {
         this.material = new THREE.MeshStandardMaterial({
             color: '#333'
         })
     }
 
-    setupMesh(): void {
+    private setupMesh(): void {
         this.mesh = new THREE.Mesh(
             this.geometry,
             this.material

@@ -15,7 +15,7 @@ export default class Renderer {
         antialias: true
     })
 
-    constructor() {
+    public constructor() {
         this.setupInstance()
     }
 

@@ -10,7 +10,7 @@ export default class Camera {
     private sizes = this.core.sizes
     private scene = this.core.scene
     private readonly canvas = this.core.canvas
-    readonly instance = new THREE.PerspectiveCamera(
+    public readonly instance = new THREE.PerspectiveCamera(
         45,
         this.sizes.width / this.sizes.height,
         0.1,
@@ -19,7 +19,7 @@ export default class Camera {
     private orbitControls?: OrbitControls
     private isOrbitControlsEnabled = false
 
-    constructor() {
+    public constructor() {
         this.setupInstance()
         if(this.isOrbitControlsEnabled) {
             this.setupOrbitControls()

@@ -2,7 +2,8 @@ import * as THREE from 'three'
 
 import Core from '../Core'
 
-// TODO: fix
+// TODO: fix moving
+// TODO: make the moving part reusable on other objects
 export default class Cube extends THREE.Mesh {
     
     private core = Core.getInstance()
@@ -13,7 +14,7 @@ export default class Cube extends THREE.Mesh {
     private isDragging = false
     private offset!: THREE.Vector3Like
 
-    constructor() {
+    public constructor() {
         super()
 
         this.setGeometry()
@@ -30,23 +31,23 @@ export default class Cube extends THREE.Mesh {
         window.addEventListener('mouseup', () => this.onMouseUp())
     }
 
-    setGeometry(): void {
+    private setGeometry(): void {
         this.geometry = new THREE.BoxGeometry(1, 1, 1)
         this.geometry.normalizeNormals()
     }
 
-    setMaterial(): void {
+    private setMaterial(): void {
         this.material = new THREE.MeshStandardMaterial({
             wireframe: false
         })
     }
 
-    setMesh(): void {
+    private setMesh(): void {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.position.y = 0.5
     }
 
-    onMouseDown(e: MouseEvent) {
+    private onMouseDown(e: MouseEvent) {
         const raycaster = new THREE.Raycaster()
         const mouse = new THREE.Vector2()
 
@@ -63,7 +64,7 @@ export default class Cube extends THREE.Mesh {
         }
     }
 
-    onMouseMove(e: MouseEvent) {
+    private onMouseMove(e: MouseEvent) {
         if (!this.isDragging) return
     
         const mouseX = (e.clientX / window.innerWidth) * 2 - 1
@@ -86,11 +87,11 @@ export default class Cube extends THREE.Mesh {
         }
     }
 
-    onMouseUp() {
+    private onMouseUp() {
         this.isDragging = false
     }
 
-    isColliding(newPosition: THREE.Vector3) {
+    private isColliding(newPosition: THREE.Vector3) {
         const newBox = new THREE.Box3().setFromObject(this.mesh)
         newBox.translate(newPosition.clone().sub(this.mesh.position))
         

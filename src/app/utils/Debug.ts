@@ -8,6 +8,6 @@ export default class Debug {
         addCube: () => {}
     }
 
-    constructor() {
+    public constructor() {
     }
 }

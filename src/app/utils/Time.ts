@@ -8,13 +8,13 @@ export default class Time extends EventDispatcher<ICustomEvents> {
     private elapsed = 0
     private delta = 16
 
-    constructor() {
+    public constructor() {
         super()
  
         this.tick()
     }
 
-    tick(): void {
+    public tick(): void {
         const currentTime = Date.now()
         this.delta = currentTime - this.current
         this.current = currentTime

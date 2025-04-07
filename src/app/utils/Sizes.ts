@@ -7,7 +7,7 @@ export default class Sizes extends EventDispatcher<ICustomEvents> {
     public height = window.innerHeight
     public pixelRatio = Math.min(window.devicePixelRatio, 2)
 
-    constructor() {
+    public constructor() {
         super()
         
         // Update sizes on window resize

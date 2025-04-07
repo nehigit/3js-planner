@@ -21,7 +21,7 @@ export default class Core {
     public world: World
 
     // TODO: singleton using private constructor
-    constructor() {
+    public constructor() {
         if (Core.instance) {
             throw new Error("Core is a singleton. Use Core.getInstance() instead.")
         }

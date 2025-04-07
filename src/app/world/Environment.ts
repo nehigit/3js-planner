@@ -11,7 +11,7 @@ export default class Environment {
     private directionalLight!: THREE.DirectionalLight // FIXME: optimize type imports??
     private ambientLight!: THREE.AmbientLight
 
-    constructor() {
+    public constructor() {
         this.setupAmbientLight()
         this.scene.add(this.ambientLight)
 
