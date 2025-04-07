@@ -1,25 +1,25 @@
 import * as THREE from 'three'
 
-import Core from "./Core.js"
+import Core from "./Core"
 
 
 export default class Renderer {
-    constructor() {
-        this.core = Core.getInstance()
-        this.world = this.core.world
-        this.canvas = this.core.canvas
-        this.sizes = this.core.sizes
-        this.scene = this.core.scene
-        this.camera = this.core.camera
 
-        this.setInstance()
+    private core = Core.getInstance()
+    private canvas = this.core.canvas
+    private sizes = this.core.sizes
+    private scene = this.core.scene
+    private camera = this.core.camera
+    private instance = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        antialias: true
+    })
+
+    constructor() {
+        this.setupInstance()
     }
 
-    setInstance() {
-        this.instance = new THREE.WebGLRenderer({
-            canvas: this.canvas,
-            antialias: true,
-        })
+    private setupInstance(): void {
         this.instance.toneMapping = THREE.CineonToneMapping
         this.instance.toneMappingExposure = 1.75
         this.instance.shadowMap.enabled = true
@@ -29,12 +29,12 @@ export default class Renderer {
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }
 
-    resize() {
+    public resize(): void {
         this.instance.setSize(this.sizes.width, this.sizes.height)
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }
 
-    update() {
+    public update(): void {
         this.instance.render(this.scene, this.camera.instance)
     }
 }

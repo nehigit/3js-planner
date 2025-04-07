@@ -1,15 +1,26 @@
 import * as THREE from 'three'
 
-import Sizes from "./utils/Sizes.js"
-import Time from "./utils/Time.js"
-import Camera from './Camera.js'
-import Renderer from './Renderer.js'
-import World from './world/World.js'
-import Debug from './utils/Debug.js'
+import Sizes from "./utils/Sizes"
+import Time from "./utils/Time"
+import Camera from './Camera'
+import Renderer from './Renderer'
+import World from './world/World'
+import Debug from './utils/Debug'
+
 
 export default class Core {
-    static instance = null
+    
+    static instance: Core | null = null
+    readonly canvas: HTMLCanvasElement
+    public debug: Debug
+    public sizes: Sizes
+    readonly time: Time
+    public scene: THREE.Scene
+    public camera: Camera
+    public renderer: Renderer
+    public world: World
 
+    // TODO: singleton using private constructor
     constructor() {
         if (Core.instance) {
             throw new Error("Core is a singleton. Use Core.getInstance() instead.")
@@ -17,7 +28,7 @@ export default class Core {
         Core.instance = this
 
         // ORDER MATTERS!!!
-        this.canvas = document.querySelector('canvas.webgl')
+        this.canvas = document.querySelector('canvas.webgl')!
         this.debug = new Debug()
         this.sizes = new Sizes()
         this.time = new Time()
@@ -25,36 +36,40 @@ export default class Core {
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
-
-        // Global access from console
-        window.core = this
-
+        
         // Listen to custom 'resize' event from Sizes
-        this.sizes.addEventListener('myCustomResizeEvent', () => {
+        this.sizes.addEventListener('windowResize', () => {
             this.resize()
         })
-
+        
         // Time tick event
         this.time.addEventListener('tick', () => {
             this.update()
         })
     }
     
-    resize() {
+    private resize(): void {
         this.camera.resize()
         this.renderer.resize()
     }
 
-    update() {
+    private update(): void {
         // Order matters
         this.camera.update()
         this.renderer.update()
     }
 
-    static getInstance() {
+    public static getInstance(): Core {
         if (!Core.instance) {
             Core.instance = new Core()
         }
         return Core.instance
     }
 }
+
+// Global access from console
+declare global {
+    interface Window { core: Core }
+}
+
+window.core = Core.getInstance()

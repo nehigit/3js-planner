@@ -1,5 +1,6 @@
 import restart from 'vite-plugin-restart'
 
+/** @type {import('vite').UserConfig} */
 export default {
     base: "3js-planner",
     root: 'src/', // Sources files (typically where index.html is)
@@ -18,5 +19,6 @@ export default {
     plugins:
     [
         restart({ restart: [ '../static/**', ] }) // Restart server on static file change
+        
     ],
 }

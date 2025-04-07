@@ -1,18 +1,20 @@
 import { EventDispatcher } from "three"
+import ICustomEvents from "./ICustomEvents"
 
-export default class Time extends EventDispatcher {
+export default class Time extends EventDispatcher<ICustomEvents> {
+
+    private readonly start = Date.now()
+    private current = this.start
+    private elapsed = 0
+    private delta = 16
 
     constructor() {
         super()
-
-        this.start = Date.now()
-        this.current = this.start
-        this.elapsed = 0
-        this.delta = 16
+ 
         this.tick()
     }
 
-    tick() {
+    tick(): void {
         const currentTime = Date.now()
         this.delta = currentTime - this.current
         this.current = currentTime
@@ -24,4 +26,5 @@ export default class Time extends EventDispatcher {
             this.tick()
         })
     }
+    
 }

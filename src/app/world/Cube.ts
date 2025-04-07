@@ -1,16 +1,20 @@
 import * as THREE from 'three'
 
-import Core from '../Core.js'
+import Core from '../Core'
 
-
+// TODO: fix
 export default class Cube extends THREE.Mesh {
     
+    private core = Core.getInstance()
+    private scene = this.core.scene
+    private camera = this.core.camera
+    private mesh!: THREE.Mesh
+    private cubes = new Array<Cube>
+    private isDragging = false
+    private offset!: THREE.Vector3Like
+
     constructor() {
         super()
-
-        this.core = Core.getInstance()
-        this.scene = this.core.scene
-        this.camera = this.core.camera
 
         this.setGeometry()
         this.setMaterial()
@@ -19,38 +23,35 @@ export default class Cube extends THREE.Mesh {
         this.scene.add(this.mesh)
 
         // Keep track of all cubes in the scene
-        if (!this.core.cubes) {
-            this.core.cubes = []
-        }
-        this.core.cubes.push(this)
+        this.cubes.push(this)
 
-        window.addEventListener('mousedown', (event) => this.onMouseDown(event))
-        window.addEventListener('mousemove', (event) => this.onMouseMove(event))
+        window.addEventListener('mousedown', (e) => this.onMouseDown(e))
+        window.addEventListener('mousemove', (e) => this.onMouseMove(e))
         window.addEventListener('mouseup', () => this.onMouseUp())
     }
 
-    setGeometry() {
+    setGeometry(): void {
         this.geometry = new THREE.BoxGeometry(1, 1, 1)
         this.geometry.normalizeNormals()
     }
 
-    setMaterial() {
+    setMaterial(): void {
         this.material = new THREE.MeshStandardMaterial({
             wireframe: false
         })
     }
 
-    setMesh() {
+    setMesh(): void {
         this.mesh = new THREE.Mesh(this.geometry, this.material)
         this.mesh.position.y = 0.5
     }
 
-    onMouseDown(event) {
+    onMouseDown(e: MouseEvent) {
         const raycaster = new THREE.Raycaster()
         const mouse = new THREE.Vector2()
 
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
 
         raycaster.setFromCamera(mouse, this.camera.instance)
         
@@ -62,11 +63,11 @@ export default class Cube extends THREE.Mesh {
         }
     }
 
-    onMouseMove(event) {
+    onMouseMove(e: MouseEvent) {
         if (!this.isDragging) return
     
-        const mouseX = (event.clientX / window.innerWidth) * 2 - 1
-        const mouseY = -(event.clientY / window.innerHeight) * 2 + 1
+        const mouseX = (e.clientX / window.innerWidth) * 2 - 1
+        const mouseY = -(e.clientY / window.innerHeight) * 2 + 1
     
         const raycaster = new THREE.Raycaster()
         const mouse = new THREE.Vector2(mouseX, mouseY)
@@ -89,11 +90,11 @@ export default class Cube extends THREE.Mesh {
         this.isDragging = false
     }
 
-    isColliding(newPosition) {
+    isColliding(newPosition: THREE.Vector3) {
         const newBox = new THREE.Box3().setFromObject(this.mesh)
         newBox.translate(newPosition.clone().sub(this.mesh.position))
         
-        for (const cube of this.core.cubes) {
+        for (const cube of this.cubes) {
             if (cube !== this) {
                 const otherBox = new THREE.Box3().setFromObject(cube.mesh)
                 if (newBox.intersectsBox(otherBox)) {
