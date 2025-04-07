@@ -26,13 +26,13 @@ export default class Camera {
         }
     }
 
-    private setupInstance() {
+    private setupInstance(): void {
         this.instance.position.set(6, 10, 10)
         this.instance.lookAt(0, 0, 0)
         this.scene.add(this.instance)
     }
 
-    private setupOrbitControls() {
+    private setupOrbitControls(): void {
         this.orbitControls = new OrbitControls(
             this.instance,
             this.canvas
@@ -40,12 +40,12 @@ export default class Camera {
         this.orbitControls.enableDamping = true
     }
 
-    public resize() {
+    public resize(): void {
         this.instance.aspect = this.sizes.width / this.sizes.height
         this.instance.updateProjectionMatrix()
     }
 
-    public update() {
+    public update(): void {
         if(this.orbitControls) {
             this.orbitControls.update()
         }

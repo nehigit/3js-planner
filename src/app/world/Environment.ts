@@ -19,11 +19,11 @@ export default class Environment {
         this.scene.add(this.directionalLight)
     }
 
-    private setupAmbientLight() {
+    private setupAmbientLight(): void {
         this.ambientLight = new THREE.AmbientLight('#fff', 1)
     }
 
-    private setupDirectionalLight() {
+    private setupDirectionalLight(): void {
         this.directionalLight = new THREE.DirectionalLight('#fff', 4)
         this.directionalLight.castShadow = true
         this.directionalLight.shadow.camera.far = 15
