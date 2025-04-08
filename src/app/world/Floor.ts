@@ -5,7 +5,7 @@ import Core from "../Core"
 
 export default class Floor {
 
-    private core = Core.getInstance()
+    private core = Core.instance
     private scene = this.core.scene
     private geometry!: THREE.BufferGeometry
     private material!: THREE.Material

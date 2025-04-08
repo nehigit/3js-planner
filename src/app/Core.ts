@@ -1,75 +1,71 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
 
-import Sizes from "./utils/Sizes"
-import Time from "./utils/Time"
-import Camera from './Camera'
-import Renderer from './Renderer'
-import World from './world/World'
-import Debug from './utils/Debug'
-
+import Sizes from './utils/Sizes';
+import Time from './utils/Time';
+import Camera from './Camera';
+import Renderer from './Renderer';
+import World from './world/World';
+import Debug from './utils/Debug';
 
 export default class Core {
-    
-    static instance: Core | null = null
-    readonly canvas: HTMLCanvasElement
-    public debug: Debug
-    public sizes: Sizes
-    readonly time: Time
-    public scene: THREE.Scene
-    public camera: Camera
-    public renderer: Renderer
-    public world: World
 
-    // TODO: singleton using private constructor
-    public constructor() {
-        if (Core.instance) {
-            throw new Error("Core is a singleton. Use Core.getInstance() instead.")
-        }
-        Core.instance = this
+    private static _instance: Core
+    readonly canvas: HTMLCanvasElement;
+    public debug: Debug;
+    public sizes: Sizes;
+    readonly time: Time;
+    public scene: THREE.Scene;
+    public camera: Camera;
+    public renderer: Renderer;
+    public world: World;
 
-        // ORDER MATTERS!!!
-        this.canvas = document.querySelector('canvas.webgl')!
-        this.debug = new Debug()
-        this.sizes = new Sizes()
-        this.time = new Time()
-        this.scene = new THREE.Scene()
-        this.camera = new Camera()
-        this.renderer = new Renderer()
-        this.world = new World()
-        
+    private constructor() {
+        Core._instance = this
+        // Order matters!
+        this.canvas = document.querySelector('canvas.webgl')!;
+        this.debug = new Debug();
+        this.sizes = new Sizes();
+        this.time = new Time();
+        this.scene = new THREE.Scene();
+        this.camera = new Camera();
+        this.renderer = new Renderer();
+        this.world = new World();
+
         // Listen to custom 'resize' event from Sizes
         this.sizes.addEventListener('windowResize', () => {
-            this.resize()
-        })
-        
+            this.resize();
+        });
+
         // Time tick event
         this.time.addEventListener('tick', () => {
-            this.update()
-        })
+            this.update();
+        });
     }
-    
+
     private resize(): void {
-        this.camera.resize()
-        this.renderer.resize()
+        this.camera.resize();
+        this.renderer.resize();
     }
 
     private update(): void {
         // Order matters
-        this.camera.update()
-        this.renderer.update()
+        this.camera.update();
+        this.renderer.update();
     }
 
-    public static getInstance(): Core {
-        if (!Core.instance) {
-            Core.instance = new Core()
+    public static get instance(): Core {
+        if (!Core._instance) {
+            Core._instance = new Core();
         }
-        return Core.instance
+        return Core._instance;
     }
 }
 
 // Global access from console
 declare global {
-    interface Window { core: Core }
+    interface Window {
+        core: Core;
+    }
 }
 
-window.core = Core.getInstance()
+window.core = Core.instance;

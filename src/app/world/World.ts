@@ -8,7 +8,7 @@ import Cube from './Cube'
 
 export default class World {
 
-    private core = Core.getInstance()
+    private core = Core.instance
     private scene = this.core.scene
     // TODO: maybe use a getter?
     private readonly time = this.core.time

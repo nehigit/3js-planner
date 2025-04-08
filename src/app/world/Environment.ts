@@ -5,7 +5,7 @@ import Core from "../Core"
 
 export default class Environment {
 
-    private core = Core.getInstance()
+    private core = Core.instance
     private scene = this.core.scene
     private debug = this.core.debug
     private directionalLight!: THREE.DirectionalLight // FIXME: optimize type imports??

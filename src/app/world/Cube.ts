@@ -6,7 +6,7 @@ import Core from '../Core'
 // TODO: make the moving part reusable on other objects
 export default class Cube extends THREE.Mesh {
     
-    private core = Core.getInstance()
+    private core = Core.instance
     private scene = this.core.scene
     private camera = this.core.camera
     private mesh!: THREE.Mesh

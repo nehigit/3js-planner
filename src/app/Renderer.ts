@@ -5,7 +5,7 @@ import Core from "./Core"
 
 export default class Renderer {
 
-    private core = Core.getInstance()
+    private core = Core.instance
     private canvas = this.core.canvas
     private sizes = this.core.sizes
     private scene = this.core.scene

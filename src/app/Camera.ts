@@ -6,7 +6,7 @@ import Core from "./Core"
 
 export default class Camera {
 
-    private core = Core.getInstance()
+    private core = Core.instance
     private sizes = this.core.sizes
     private scene = this.core.scene
     private readonly canvas = this.core.canvas
