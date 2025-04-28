@@ -17,7 +17,8 @@ export default class Camera {
         100
     )
     private orbitControls?: OrbitControls
-    private isOrbitControlsEnabled = false
+    private isOrbitControlsEnabled = true
+    // private isOrbitControlsEnabled = false
 
     public constructor() {
         this.setupInstance()

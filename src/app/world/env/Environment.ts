@@ -20,7 +20,7 @@ export default class Environment {
     }
 
     private setupAmbientLight(): void {
-        this.ambientLight = new THREE.AmbientLight('#fff', 1)
+        this.ambientLight = new THREE.AmbientLight('#fff', 5)
     }
 
     private setupDirectionalLight(): void {

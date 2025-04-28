@@ -2,7 +2,7 @@ import * as THREE from 'three'
 
 import Core from "../Core"
 import Environment from './env/Environment'
-import Floor from './other/Floor'
+import Room from './room/Room'
 import Cube from './furniture/Cube'
 import Furniture from './furniture/Furniture'
 import Rectangle from './furniture/Rectangle'
@@ -16,13 +16,12 @@ export default class World {
     private readonly time = this.core.time
     private debug = this.core.debug
     private environment = new Environment()
-    private axesHelper = new THREE.AxesHelper(10)
-    private floor = new Floor()
     private furnitures = new Array<Furniture>
 
 
     public constructor() {
-        this.scene.add(this.axesHelper)
+        this.scene.add(new THREE.AxesHelper(10))
+        this.scene.add(new Room())
         
         this.setupDebug()
     }
