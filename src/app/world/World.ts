@@ -1,9 +1,11 @@
 import * as THREE from 'three'
 
 import Core from "../Core"
-import Environment from './Environment'
-import Floor from './Floor'
-import Cube from './Cube'
+import Environment from './env/Environment'
+import Floor from './other/Floor'
+import Cube from './furniture/Cube'
+import Furniture from './furniture/Furniture'
+import Rectangle from './furniture/Rectangle'
 
 
 export default class World {
@@ -16,16 +18,37 @@ export default class World {
     private environment = new Environment()
     private axesHelper = new THREE.AxesHelper(10)
     private floor = new Floor()
+    private furnitures = new Array<Furniture>
+
 
     public constructor() {
         this.scene.add(this.axesHelper)
         
-        this.debug.debugObject.addCube = () => {
-            new Cube()
-        }
-
-        const worldFolder = this.debug.gui.addFolder('World')
-        worldFolder.add(this.debug.debugObject, 'addCube')
+        this.setupDebug()
     }
     
+    private setupDebug(): void {
+        const worldFolder = this.debug.gui.addFolder('World')
+        
+        this.debug.debugObject.addCube = () => {
+            const cube = new Cube()
+            this.furnitures.push(cube)
+            this.scene.add(cube)
+            cube.position.y = .5
+        }
+        worldFolder.add(this.debug.debugObject, 'addCube').name("Add Cube")
+
+        this.debug.debugObject.addRectangle = () => {
+            const rectangle = new Rectangle()
+            this.furnitures.push(rectangle)
+            this.scene.add(rectangle)
+            rectangle.position.y = .5
+        }
+        worldFolder.add(this.debug.debugObject, 'addRectangle').name("Add Rectangle")
+
+    }
+
+    public checkCollisions() {
+        
+    }
 }

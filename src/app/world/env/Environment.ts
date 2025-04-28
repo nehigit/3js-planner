@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Core from "../Core"
+import Core from "../../Core"
 
 
 export default class Environment {

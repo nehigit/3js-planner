@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 
-import Core from "../Core"
+import Core from "../../Core"
 
 
-export default class Floor {
+export default class Wall {
 
     private core = Core.instance
     private scene = this.core.scene
@@ -12,8 +12,6 @@ export default class Floor {
     private mesh!: THREE.Mesh
 
     public constructor() {
-        // TODO: maybe make the setup functions return objects and assign them above 
-        // instead of invoking functions inside constructor??
         this.setupGeometry()
         this.setupMaterial()
         this.setupMesh()
