@@ -24,7 +24,7 @@ jobs:
     - name: Configure Node
       uses: actions/setup-node@v4
       with:
-        node-version: '20.13.1'
+        node-version: '24.13.11'
 
     - name: Install
       run: |
