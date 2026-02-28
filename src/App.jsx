@@ -6,6 +6,7 @@ import {
 import * as THREE from 'three'
 import ResizableRoom from './room/ResizableRoom'
 
+
 export default function App() {
     const directionalLight = useRef()
     const controls = useRef()
@@ -26,5 +27,4 @@ export default function App() {
             <meshStandardMaterial />
         </mesh>
     </>
-  
 }

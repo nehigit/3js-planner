@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { Canvas } from '@react-three/fiber'
 
+
 createRoot(document.getElementById('root')).render(
   <Canvas
     camera={{
