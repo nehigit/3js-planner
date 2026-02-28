@@ -1,17 +1,12 @@
 import { Box } from '@react-three/drei'
-import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useMemo } from 'react'
 
-export default function CornerHandle({ position, onDrag, controls }) {
-  const { camera } = useThree()
-
+export default function CornerHandler({ position, onDrag, controls }) {
   const plane = useMemo(
     () => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0),
     []
   )
-
-  const raycaster = useMemo(() => new THREE.Raycaster(), [])
 
   const onPointerDown = (e) => {
     e.stopPropagation()
@@ -30,12 +25,8 @@ export default function CornerHandle({ position, onDrag, controls }) {
 
     e.stopPropagation()
 
-    raycaster.setFromCamera(e.pointer, camera)
-
-    const point = new THREE.Vector3()
-    raycaster.ray.intersectPlane(plane, point)
-
-    onDrag(point)
+    const point = e.ray.intersectPlane(plane, new THREE.Vector3())
+    if (point) onDrag(point)
   }
 
   return (
