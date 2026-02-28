@@ -1,49 +1,35 @@
-import { useState, useRef } from 'react'
-import {
-    OrbitControls,
-    useHelper
-} from '@react-three/drei'
-import * as THREE from 'three'
+import { Box } from "@react-three/drei"
 
+export default function Room({ min, max, thickness = 0.1, color = '#d9d9d9' }) {
+  const width = max[0] - min[0]
+  const height = max[1] - min[1]
+  const depth = max[2] - min[2]
 
-export default function Room({ width = 5, height = 3, depth = 5, wallColor = 'lightgray' }) {
+  const centerX = (min[0] + max[0]) / 2
+  const centerY = (min[1] + max[1]) / 2
+  const centerZ = (min[2] + max[2]) / 2
+
   return (
     <group>
-      {/* Floor */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[width, 0.1, depth]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh>
+      <Box args={[width, thickness, depth]} position={[centerX, min[1], centerZ]}>
+        <meshStandardMaterial color={color} />
+      </Box>
 
-      {/* Ceiling */}
-      {/* <mesh position={[0, height, 0]}>
-        <boxGeometry args={[width, 0.1, depth]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh> */}
+      <Box args={[width, height, thickness]} position={[centerX, centerY, min[2]]}>
+        <meshStandardMaterial color={color} />
+      </Box>
 
-      {/* Back Wall */}
-      <mesh position={[0, height / 2, -depth / 2]}>
-        <boxGeometry args={[width, height, 0.1]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh>
+      <Box args={[width, height, thickness]} position={[centerX, centerY, max[2]]}>
+        <meshStandardMaterial color={color} />
+      </Box>
 
-      {/* Front Wall */}
-      <mesh position={[0, height / 2, depth / 2]}>
-        <boxGeometry args={[width, height, 0.1]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh>
+      <Box args={[thickness, height, depth]} position={[min[0], centerY, centerZ]}>
+        <meshStandardMaterial color={color} />
+      </Box>
 
-      {/* Left Wall */}
-      <mesh position={[-width / 2, height / 2, 0]}>
-        <boxGeometry args={[0.1, height, depth]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh>
-
-      {/* Right Wall */}
-      <mesh position={[width / 2, height / 2, 0]}>
-        <boxGeometry args={[0.1, height, depth]} />
-        <meshStandardMaterial color={wallColor} />
-      </mesh>
+      <Box args={[thickness, height, depth]} position={[max[0], centerY, centerZ]}>
+        <meshStandardMaterial color={color} />
+      </Box>
     </group>
-  );
+  )
 }
