@@ -30,11 +30,11 @@ jobs:
       run: |
         npm ci
         npm run build
-        touch dist/.nojekyll
+        touch ../dist/.nojekyll
   
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: dist
+        folder: ../dist
         branch: gh-pages
         
