@@ -13,6 +13,8 @@ jobs:
   build-and-deploy:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     # Prevent from doubling up while making multiple deployments at the same time
     concurrency: ci-${{github.ref}}
@@ -30,11 +32,12 @@ jobs:
       run: |
         npm ci
         npm run build
-        touch ../dist/.nojekyll
+        touch dist/.nojekyll
   
     - name: Deploy
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: ../dist
+        folder: dist
         branch: gh-pages
         

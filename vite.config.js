@@ -4,11 +4,11 @@ import restart from 'vite-plugin-restart'
 
 export default {
     base: "/3js-planner/",
-    publicDir: '../public/',
+    publicDir: 'public',
     plugins:
     [
         // Restart server on static/public file change
-        restart({ restart: [ '../public/**', ] }),
+        restart({ restart: [ 'public/**', ] }),
 
         // React support
         react(),
@@ -35,7 +35,7 @@ export default {
     },
     build:
     {
-        outDir: '../dist', // Output in the dist/ folder
+        outDir: 'dist', // Output in the dist/ folder
         emptyOutDir: true, // Empty the folder first
         sourcemap: true // Add sourcemap
     },
