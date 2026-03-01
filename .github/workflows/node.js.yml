@@ -9,12 +9,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
-jobs:
-  build-and-deploy:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     # Prevent from doubling up while making multiple deployments at the same time
     concurrency: ci-${{github.ref}}
@@ -33,11 +35,29 @@ jobs:
         npm ci
         npm run build
         touch dist/.nojekyll
-  
-    - name: Deploy
+
+    - name: Setup Pages
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: JamesIves/github-pages-deploy-action@v4
+      uses: actions/configure-pages@v5
+
+    - name: Upload Pages artifact
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
       with:
-        folder: dist
-        branch: gh-pages
+        path: dist
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
         
