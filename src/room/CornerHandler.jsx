@@ -1,9 +1,12 @@
 import { Box } from '@react-three/drei'
 import * as THREE from 'three'
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 
 
 export default function CornerHandler({ position, onDrag, controls }) {
+
+    const box = useRef()
+
     const plane = useMemo(
         () => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0),
         []
@@ -30,13 +33,27 @@ export default function CornerHandler({ position, onDrag, controls }) {
         if (point) onDrag(point)
     }
 
+    const onPointerEnter = (e) => {
+        document.body.style.cursor = 'pointer'
+        box.current.visible = true
+    }
+
+    const onPointerLeave = (e) => {
+        document.body.style.cursor = 'default'
+        box.current.visible = false
+    }
+
     return (
         <Box
+            ref={box}
             args={[0.3, 0.3, 0.3]}
             position={position}
             onPointerDown={onPointerDown}
             onPointerUp={onPointerUp}
             onPointerMove={onPointerMove}
+            onPointerEnter={onPointerEnter}
+            onPointerLeave={onPointerLeave}
+            visible={false}
         >
             <meshStandardMaterial color="hotpink" />
         </Box>
