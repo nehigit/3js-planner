@@ -6,6 +6,7 @@ import { useMemo, useRef } from 'react'
 export default function CornerHandler({ position, onDrag, controls }) {
 
     const box = useRef()
+    const dragOffset = useRef(null)
 
     const plane = useMemo(
         () => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0),
@@ -16,12 +17,24 @@ export default function CornerHandler({ position, onDrag, controls }) {
         e.stopPropagation()
         e.target.setPointerCapture(e.pointerId)
         if (controls?.current) controls.current.enabled = false
+
+        // fixes drag snapping directly to the current ray-plane hit point
+        const point = e.ray.intersectPlane(plane, new THREE.Vector3())
+        if (point) {
+            dragOffset.current = {
+                x: position[0] - point.x,
+                z: position[2] - point.z,
+            }
+        }
     }
 
     const onPointerUp = (e) => {
         e.stopPropagation()
         e.target.releasePointerCapture(e.pointerId)
         if (controls?.current) controls.current.enabled = true
+        
+        // clear offset (snapping fix)
+        dragOffset.current = null
     }
 
     const onPointerMove = (e) => {
@@ -30,7 +43,12 @@ export default function CornerHandler({ position, onDrag, controls }) {
         e.stopPropagation()
 
         const point = e.ray.intersectPlane(plane, new THREE.Vector3())
-        if (point) onDrag(point)
+        if (!point) return
+
+        const offsetX = dragOffset.current?.x ?? 0
+        const offsetZ = dragOffset.current?.z ?? 0
+
+        onDrag(new THREE.Vector3(point.x + offsetX, point.y, point.z + offsetZ))
     }
 
     const onPointerEnter = (e) => {
