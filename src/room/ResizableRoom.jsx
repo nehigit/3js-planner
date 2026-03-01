@@ -1,17 +1,8 @@
-import { useState } from 'react'
 import CornerHandler from './CornerHandler'
 import Room from './Room'
 
 
-export default function ResizableRoom({ room: roomProp, setRoom: setRoomProp, controls }) {
-    const [localRoom, setLocalRoom] = useState(() => ({
-        min: [0, 0, 0],
-        max: [5, 3, 5],
-    }))
-
-    const room = roomProp ?? localRoom
-    const setRoom = setRoomProp ?? setLocalRoom
-
+export default function ResizableRoom({ room, setRoom, controls }) {
     const { min, max } = room
     const MIN_SIZE = 0.5
 
