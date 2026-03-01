@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
+// TODO: to jest do napisania od nowa bo tragedia ile tu jest zbędnego kodu
+
 const PLANE_NORMALS = {
     xy: new THREE.Vector3(0, 0, 1),
     xz: new THREE.Vector3(0, 1, 0),
     yz: new THREE.Vector3(1, 0, 0),
     zy: new THREE.Vector3(1, 0, 0),
 }
+const SOFT_BOUNDS_EPSILON = 1e-5
 
 function toVector3(value, fallback = 0) {
     if (value instanceof THREE.Vector3) return value.clone()
@@ -215,12 +218,12 @@ export default function Draggable({
         const maxZ = worldPosition.z + maxOffset.z
 
         return (
-            minX < limits.min.x ||
-            minY < limits.min.y ||
-            minZ < limits.min.z ||
-            maxX > limits.max.x ||
-            maxY > limits.max.y ||
-            maxZ > limits.max.z
+            minX < limits.min.x - SOFT_BOUNDS_EPSILON ||
+            minY < limits.min.y - SOFT_BOUNDS_EPSILON ||
+            minZ < limits.min.z - SOFT_BOUNDS_EPSILON ||
+            maxX > limits.max.x + SOFT_BOUNDS_EPSILON ||
+            maxY > limits.max.y + SOFT_BOUNDS_EPSILON ||
+            maxZ > limits.max.z + SOFT_BOUNDS_EPSILON
         )
     }
 
