@@ -1,64 +1,46 @@
-import CornerHandler from './CornerHandler'
+import CornerHandle from './CornerHandle'
 import Room from './Room'
 
+const MIN_SIZE = 0.5
+const HANDLE_HEIGHT = 0.2
 
-export default function ResizableRoom({ room, setRoom, controls }) {
-    const { min, max } = room
-    const MIN_SIZE = 0.5
+// Which bound each corner moves on the X and Z axes
+const CORNERS = [
+    { x: 'min', z: 'min' },
+    { x: 'max', z: 'min' },
+    { x: 'min', z: 'max' },
+    { x: 'max', z: 'max' },
+]
 
-    const updateCorner = (corner, point) => {
-        setRoom((prev) => {
-            let newMin = [...prev.min]
-            let newMax = [...prev.max]
+// Returns `room` with `corner` moved to `point`, keeping the room at least MIN_SIZE wide and deep
+function moveCorner(room, corner, point) {
+    const next = { min: [...room.min], max: [...room.max] }
 
-            if (corner === 'bl') {
-                newMin[0] = Math.min(point.x, prev.max[0] - MIN_SIZE)
-                newMin[2] = Math.min(point.z, prev.max[2] - MIN_SIZE)
-            }
-
-            if (corner === 'br') {
-                newMax[0] = Math.max(point.x, prev.min[0] + MIN_SIZE)
-                newMin[2] = Math.min(point.z, prev.max[2] - MIN_SIZE)
-            }
-
-            if (corner === 'tl') {
-                newMin[0] = Math.min(point.x, prev.max[0] - MIN_SIZE)
-                newMax[2] = Math.max(point.z, prev.min[2] + MIN_SIZE)
-            }
-
-            if (corner === 'tr') {
-                newMax[0] = Math.max(point.x, prev.min[0] + MIN_SIZE)
-                newMax[2] = Math.max(point.z, prev.min[2] + MIN_SIZE)
-            }
-
-            return { min: newMin, max: newMax }
-        })
+    const setEdge = (i, side, value) => {
+        next[side][i] = side === 'min'
+            ? Math.min(value, room.max[i] - MIN_SIZE)
+            : Math.max(value, room.min[i] + MIN_SIZE)
     }
+    setEdge(0, corner.x, point.x)
+    setEdge(2, corner.z, point.z)
 
+    return next
+}
+
+
+// Controlled: `room` is the interior `{ min, max }`, `onChange` receives the resized room
+export default function ResizableRoom({ room, onChange }) {
     return (
-    <>
-        <Room min={min} max={max} />
+        <>
+            <Room min={room.min} max={room.max} />
 
-        <CornerHandler
-            position={[min[0], 0.2, min[2]]}
-            onDrag={(p) => updateCorner('bl', p)}
-            controls={controls}
-        />
-        <CornerHandler
-            position={[max[0], 0.2, min[2]]}
-            onDrag={(p) => updateCorner('br', p)}
-            controls={controls}
-        />
-        <CornerHandler
-            position={[min[0], 0.2, max[2]]}
-            onDrag={(p) => updateCorner('tl', p)}
-            controls={controls}
-        />
-        <CornerHandler
-            position={[max[0], 0.2, max[2]]}
-            onDrag={(p) => updateCorner('tr', p)}
-            controls={controls}
-        />
-    </>
+            {CORNERS.map((corner) => (
+                <CornerHandle
+                    key={`${corner.x}-${corner.z}`}
+                    position={[room[corner.x][0], HANDLE_HEIGHT, room[corner.z][2]]}
+                    onDrag={(point) => onChange(moveCorner(room, corner, point))}
+                />
+            ))}
+        </>
     )
 }

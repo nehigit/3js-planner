@@ -30,9 +30,10 @@ jobs:
       with:
         node-version: '24.13.1'
         
-    - name: Install & Build
+    - name: Install, Lint & Build
       run: |
         npm ci
+        npm run lint
         npm run build
         touch dist/.nojekyll
 
