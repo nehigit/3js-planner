@@ -18,7 +18,8 @@ Every push to `main` triggers `.github/workflows/node.js.yml`, which runs `npm r
 
 ## Coding preferences
 
-- Prefer R3F-specific APIs and Drei components/utilities over native Three.js solutions whenever they offer better readability or maintainability. Fall back to raw Three.js only when R3F/Drei don't cover the use case. Before writing interaction or helper code, check whether Drei already provides it.
+- Prefer an existing @react-three/drei component or hook over custom code(controls, gizmos, cameras, loaders, shadows, Html labels, etc.). Check the threejs-impl-drei skill for available helpers before writing your own. Only write custom code when no Drei helper fits, and leave a short comment saying why.
+- Prefer R3F-specific APIs and Drei components/utilities over native Three.js solutions. Before writing interaction or helper code, check whether Drei already provides it.
 - Follow the Rules of React (enforced by `npm run lint`): no reading `ref.current` or mutating state/memoized values during render; use `useEffectEvent` when an effect must read the latest props without re-running on them; use `useState(() => ...)`, not `useMemo`, for objects that must stay stable.
 - Mutating Three.js objects (matrices, materials) is fine in event handlers and effects, reached through refs. Fast-changing values like drag positions stay in Three objects, not React state.
 - Props that only seed internal state use React's `default*` naming (`defaultPosition`). Controlled components take a value and an `onChange` that receives the next value.
