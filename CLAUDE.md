@@ -28,7 +28,7 @@ Every push to `main` triggers `.github/workflows/node.js.yml`, which runs `npm r
 
 This is a React Three Fiber (R3F) room planner app. `src/main.jsx` mounts a `<Canvas>` inside `<StrictMode>` as the React root, so there is no DOM UI layer yet. Any HTML overlay would need Drei's `<Html>` or a restructure of `main.jsx`. `App.jsx` composes the scene and owns the `room` state: `{ min: [x,y,z], max: [x,y,z] }`, the room's **interior**. Lighting lives in `src/scene/Lights.jsx`.
 
-**Camera controls are never passed as props.** `<OrbitControls makeDefault />` registers itself in R3F state, and Drei's `DragControls` pauses it automatically during drags.
+**Camera controls are never passed as props.** `<OrbitControls makeDefault />` registers itself in R3F state, and Drei's `DragControls` pauses it automatically during drags. Its `target` is the initial room's center (`ORBIT_TARGET` in `App.jsx`) and doesn't follow resizes.
 
 **Interaction** (`src/interaction/`): dragging is done with Drei's `DragControls`, not hand-written pointer handlers. Things to know about it:
 - It positions its group through a `matrix` (`matrixAutoUpdate` is off), so a `position` prop on it is ignored. Pass the starting `Matrix4` once, then read or move the object through the group's `matrix` (via its forwarded `ref`).
@@ -50,4 +50,4 @@ Pieces:
 
 ## Project state
 
-This is an early-stage project. The `README.md` backlog (written in Polish, as are some code comments) lists planned features: a 2D/3D view toggle (GSAP transition to an orthographic top-down camera), showing wall lengths while resizing in 2D, adding/moving furniture (furniture can pass through other furniture while dragging but can't be dropped on it), a furniture attribute popup UI, first-person mode, and day/night. The `3js-planner/` subdirectory is a leftover Vite scaffold. The real project lives at the repo root.
+This is an early-stage project. The `README.md` backlog (written in Polish, as are some code comments) lists planned features: a 2D/3D view toggle (GSAP transition to an orthographic top-down camera), showing wall lengths while resizing in 2D, adding/moving furniture (furniture can pass through other furniture while dragging but can't be dropped on it), a furniture attribute popup UI, first-person mode, and day/night.

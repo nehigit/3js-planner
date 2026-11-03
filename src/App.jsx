@@ -10,6 +10,9 @@ const INITIAL_ROOM = {
     max: [5, 3, 5],
 }
 
+// the camera orbits the initial room's center; it doesn't follow later resizes
+const ORBIT_TARGET = INITIAL_ROOM.min.map((value, i) => (value + INITIAL_ROOM.max[i]) / 2)
+
 
 export default function App() {
     const [room, setRoom] = useState(INITIAL_ROOM)
@@ -17,7 +20,7 @@ export default function App() {
     return <>
         <color args={['ivory']} attach="background" />
         {/* makeDefault registers it in R3F state, so DragControls can pause it while dragging */}
-        <OrbitControls makeDefault />
+        <OrbitControls makeDefault target={ORBIT_TARGET} />
         <axesHelper args={[10]} />
         <Lights />
 
