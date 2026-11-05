@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { OrbitControls } from '@react-three/drei'
 import Lights from './scene/Lights'
 import ResizableRoom from './room/ResizableRoom'
@@ -24,7 +24,10 @@ export default function App() {
         <axesHelper args={[10]} />
         <Lights />
 
-        <ResizableRoom room={room} onChange={setRoom} />
+        {/* the rest of the scene doesn't wait for the wall textures to load */}
+        <Suspense fallback={null}>
+            <ResizableRoom room={room} onChange={setRoom} />
+        </Suspense>
 
         <Draggable bounds={room} defaultPosition={[2.5, 1, 2.5]}>
             <mesh>

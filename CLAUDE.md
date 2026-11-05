@@ -44,7 +44,7 @@ Pieces:
 - `useHoverCursor.js` is hover state plus Drei's `useCursor`, shared by all draggables.
 
 **Room system** (`src/room/`):
-- `Room.jsx` builds the floor and walls *outside* `min`/`max`, so the interior is exactly the usable space and `room` can be passed straight to `Draggable` as `bounds`. Its `<group>` stops propagation of pointer events, so walls block objects behind them (orbiting from a wall still works). Objects snapped *outside* still overlap the wall's thickness.
+- `Room.jsx` builds the floor and walls *outside* `min`/`max`, so the interior is exactly the usable space and `room` can be passed straight to `Draggable` as `bounds`. Its `<group>` stops propagation of pointer events, so walls block objects behind them (orbiting from a wall still works). Objects snapped *outside* still overlap the wall's thickness. Every part gets world-space UVs (`worldUVs.js`, in metres), so the wall texture (`src/assets/textures/wall/`, tiled once per `WALL_TEXTURE_SIZE`) keeps its scale and stays put while the room is resized. Across a part's thickness the UVs are pinned to the part instead, so wall tops don't slide over the texture.
 - `ResizableRoom.jsx` is controlled (`room`, `onChange(nextRoom)`). The `CORNERS` table says which bound (`min`/`max`) each corner moves on X and Z. `moveCorner` applies a drag with `MIN_SIZE = 0.5`.
 - `CornerHandle.jsx` is a handle (visible only on hover): a controlled `DragControls` on the XZ plane.
 
