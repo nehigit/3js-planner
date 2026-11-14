@@ -29,10 +29,10 @@ function moveCorner(room, corner, point) {
 
 
 // Controlled: `room` is the interior `{ min, max }`, `onChange` receives the resized room
-export default function ResizableRoom({ room, onChange }) {
+export default function ResizableRoom({ room, onChange, onClick }) {
     return (
         <>
-            <Room min={room.min} max={room.max} />
+            <Room min={room.min} max={room.max} onClick={onClick} />
 
             {CORNERS.map((corner) => (
                 <CornerHandle

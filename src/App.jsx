@@ -3,6 +3,7 @@ import { OrbitControls } from '@react-three/drei'
 import Lights from './scene/Lights'
 import ResizableRoom from './room/ResizableRoom'
 import Draggable from './interaction/Draggable'
+import Selectable from './interaction/Selectable'
 
 // interior of the room; walls are built outside it
 const INITIAL_ROOM = {
@@ -16,6 +17,9 @@ const ORBIT_TARGET = INITIAL_ROOM.min.map((value, i) => (value + INITIAL_ROOM.ma
 
 export default function App() {
     const [room, setRoom] = useState(INITIAL_ROOM)
+    // id of the item showing its rotation gizmo; one at a time
+    const [selectedId, setSelectedId] = useState(null)
+    const deselect = () => setSelectedId(null)
 
     return <>
         <color args={['ivory']} attach="background" />
@@ -23,17 +27,25 @@ export default function App() {
         <OrbitControls makeDefault target={ORBIT_TARGET} />
         <axesHelper args={[10]} />
 
-        {/* the rest of the scene doesn't wait for the HDRI and wall textures to load */}
-        <Suspense fallback={null}>
-            <Lights />
-            <ResizableRoom room={room} onChange={setRoom} />
-        </Suspense>
+        {/* a click that hits nothing in here (the sky) deselects; the room reports its own clicks */}
+        <group onPointerMissed={deselect}>
+            {/* the rest of the scene doesn't wait for the HDRI and wall textures to load */}
+            <Suspense fallback={null}>
+                <Lights />
+                <ResizableRoom room={room} onChange={setRoom} onClick={deselect} />
+            </Suspense>
 
-        <Draggable bounds={room} defaultPosition={[2.5, 1, 2.5]}>
-            <mesh>
-                <sphereGeometry />
-                <meshStandardMaterial color="orange" />
-            </mesh>
-        </Draggable>
+            <Draggable bounds={room} defaultPosition={[2.5, 1, 2.5]}>
+                <Selectable
+                    selected={selectedId === 'sphere'}
+                    onSelect={(selected) => setSelectedId(selected ? 'sphere' : null)}
+                >
+                    <mesh>
+                        <sphereGeometry />
+                        <meshStandardMaterial color="orange" />
+                    </mesh>
+                </Selectable>
+            </Draggable>
+        </group>
     </>
 }

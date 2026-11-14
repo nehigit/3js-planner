@@ -45,6 +45,11 @@ export function snapToBounds(center, halfSize, bounds, axes) {
     return snapped
 }
 
+// the object crosses an edge (partly inside, partly outside): the position a drop would correct
+export function isStraddling(center, halfSize, bounds, axes) {
+    return !snapToBounds(center, halfSize, bounds, axes).equals(center)
+}
+
 // returns a copy of "center", moved so the object is fully inside the bounds
 // if the object is wider than the bounds, the "min" edge wins
 export function keepInside(center, halfSize, bounds, axes) {

@@ -3,6 +3,7 @@ import { DragControls } from '@react-three/drei'
 import * as THREE from 'three'
 import useHoverCursor from './useHoverCursor'
 import useSoftBounds from './useSoftBounds'
+import { BoundsContext } from './boundsContext'
 
 const PLANES = {
     xz: { axisLock: 'y', axes: [0, 2] },
@@ -30,12 +31,14 @@ export default function Draggable({
     const [, setHovered] = useHoverCursor(enabled)
     const { axisLock, axes } = PLANES[plane]
 
-    const { updateFade, settle } = useSoftBounds(ref, {
+    const { beginDrag, updateFade, settle } = useSoftBounds(ref, {
         bounds,
         axes,
         fadedOpacity: outOfBoundsOpacity,
         onSnap: onDrag,
     })
+    // for nested components that change the object's footprint (rotation)
+    const boundsCheck = { updateFade, settle }
 
     const handleDrag = (localMatrix) => {
         updateFade()
@@ -53,7 +56,13 @@ export default function Draggable({
             onDrag={handleDrag}
             onDragEnd={settle}
         >
-            {children}
+            {/* measured on pointer down rather than in onDragStart, which DragControls only fires once the
+                pointer has moved; by then press feedback (Selectable) may have shrunk the object */}
+            <group onPointerDown={beginDrag}>
+                <BoundsContext value={boundsCheck}>
+                    {children}
+                </BoundsContext>
+            </group>
         </DragControls>
     )
 }

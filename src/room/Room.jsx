@@ -26,7 +26,6 @@ const stopPropagation = (e) => e.stopPropagation()
 
 // walls are solid to the pointer: events don't reach objects behind them
 const blockPointer = {
-    onClick: stopPropagation,
     onPointerOver: stopPropagation,
     onPointerMove: stopPropagation,
     onPointerDown: stopPropagation,
@@ -56,7 +55,13 @@ function Part({ size, position, children }) {
 
 
 // `min`/`max` are the interior; the floor and walls are built outside it
-export default function Room({ min, max, floorColor = '#d9d9d9' }) {
+// `onClick` fires for a click (not a drag) on the floor or a wall
+export default function Room({ min, max, floorColor = '#d9d9d9', onClick }) {
+    const handleClick = (e) => {
+        e.stopPropagation()
+        if (e.delta <= 2) onClick?.(e)
+    }
+
     const wallMaps = useTexture(WALL_MAPS, tileWallTextures)
 
     const t = WALL_THICKNESS
@@ -78,7 +83,7 @@ export default function Room({ min, max, floorColor = '#d9d9d9' }) {
     ]
 
     return (
-        <group {...blockPointer}>
+        <group {...blockPointer} onClick={handleClick}>
             <Part size={floor.size} position={floor.position}>
                 <meshStandardMaterial color={floorColor} />
             </Part>
