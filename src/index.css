@@ -7,4 +7,18 @@ body,
     width: 100%;
     height: 100%;
     overflow: hidden;
+    margin: 0;
+    font-family: system-ui, sans-serif;
+}
+
+/* the 3D scene fills the viewport; DOM panels float over it */
+.layout {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.scene {
+    position: absolute;
+    inset: 0;
 }

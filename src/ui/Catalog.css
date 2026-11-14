@@ -1,0 +1,345 @@
+/* Leva's default theme tokens */
+.catalog,
+.catalog-tab {
+    --elevation1: #292d39;
+    --elevation2: #181c20;
+    --elevation3: #373c4b;
+    --accent1: #0066dc;
+    --accent2: #007bff;
+    --accent3: #3c93ff;
+    --highlight1: #535760;
+    --highlight2: #8c92a4;
+    --highlight3: #fefefe;
+    --radius-sm: 3px;
+    --radius-lg: 10px;
+    --space-xs: 3px;
+    --space-sm: 6px;
+    --space-md: 10px;
+    --gap: 7px;
+    --row-height: 24px;
+    --titlebar-height: 39px;
+    --panel-offset: 10px;
+    --slide: 250ms ease;
+}
+
+.catalog {
+    position: absolute;
+    top: var(--panel-offset);
+    left: var(--panel-offset);
+    z-index: 1;
+    width: 280px;
+    max-height: calc(100% - 20px);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--elevation2);
+    box-shadow: 0 0 9px 0 #00000088;
+    color: var(--highlight3);
+    font: 11px/1 ui-monospace, SFMono-Regular, Menlo, 'Roboto Mono', monospace;
+    user-select: none;
+    transition: transform var(--slide);
+}
+
+/* slid fully off the left edge, including its offset */
+.catalog.is-hidden {
+    transform: translateX(calc(-100% - var(--panel-offset)));
+}
+
+/* ---- show tab, at the screen edge while the panel is hidden ---- */
+
+.catalog-tab {
+    position: absolute;
+    top: var(--panel-offset);
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: var(--titlebar-height);
+    padding: 0;
+    border: 0;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    background: var(--elevation1);
+    box-shadow: 0 0 9px 0 #00000088;
+    color: var(--highlight2);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+    transition: transform 200ms ease, opacity 200ms ease;
+}
+
+/* appears once the panel has mostly left */
+.catalog-tab.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 150ms;
+}
+
+.catalog-tab:hover,
+.catalog-tab:focus-visible {
+    color: var(--highlight3);
+    outline: none;
+}
+
+/* ---- title bar ---- */
+
+.catalog-titlebar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    height: var(--titlebar-height);
+    background: var(--elevation1);
+}
+
+.catalog-title {
+    color: var(--highlight2);
+    letter-spacing: 0.02em;
+}
+
+.catalog-chevron,
+.catalog-hide {
+    position: absolute;
+    top: 0;
+    width: var(--titlebar-height);
+    height: var(--titlebar-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--highlight2);
+    cursor: pointer;
+}
+
+.catalog-chevron {
+    left: 0;
+}
+
+.catalog-hide {
+    right: 0;
+}
+/* language toggle, left of the hide button */
+.catalog-language {
+    position: absolute;
+    top: 0;
+    right: var(--titlebar-height);
+    height: var(--titlebar-height);
+    padding: 0 var(--space-sm);
+    border: 0;
+    background: none;
+    color: var(--highlight2);
+    font: inherit;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+}
+.catalog-language:hover,
+.catalog-language:focus-visible {
+    color: var(--highlight3);
+    outline: none;
+}
+
+.catalog-chevron:hover,
+.catalog-chevron:focus-visible,
+.catalog-hide:hover,
+.catalog-hide:focus-visible {
+    color: var(--highlight3);
+    outline: none;
+}
+
+.catalog-chevron-icon {
+    transition: transform 150ms ease;
+}
+
+/* ---- search ---- */
+
+.catalog-search {
+    position: relative;
+    display: block;
+    flex: none;
+    padding: var(--space-md) var(--space-md) var(--space-xs);
+}
+
+.catalog-search-icon {
+    position: absolute;
+    left: calc(var(--space-md) + var(--space-sm));
+    top: calc(var(--space-md) + (var(--row-height) - 12px) / 2);
+    color: var(--highlight1);
+    pointer-events: none;
+}
+
+.catalog-search input {
+    width: 100%;
+    height: var(--row-height);
+    padding: 0 var(--space-sm) 0 calc(var(--space-sm) * 2 + 12px);
+    box-sizing: border-box;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--elevation1);
+    color: var(--highlight3);
+    font: inherit;
+    box-shadow: 0 0 0 1px transparent;
+    transition: box-shadow 100ms ease;
+}
+
+.catalog-search input::placeholder {
+    color: var(--highlight1);
+}
+
+.catalog-search input:hover {
+    box-shadow: 0 0 0 1px var(--highlight1);
+}
+
+.catalog-search input:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--accent2);
+}
+
+/* native clear button of type=search doesn't fit the theme */
+.catalog-search input::-webkit-search-cancel-button {
+    appearance: none;
+}
+
+/* ---- folders ---- */
+
+.catalog-panel {
+    overflow-y: auto;
+}
+
+.catalog-folder + .catalog-folder {
+    border-top: 1px solid var(--elevation1);
+}
+
+.catalog-folder-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: 100%;
+    height: 30px;
+    padding: 0 var(--space-md);
+    border: 0;
+    background: none;
+    color: var(--highlight3);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.catalog-folder-title .catalog-chevron-icon {
+    color: var(--highlight2);
+}
+
+.catalog-folder-title:hover .catalog-chevron-icon,
+.catalog-folder-title:focus-visible .catalog-chevron-icon {
+    color: var(--highlight3);
+}
+
+.catalog-folder-title:focus-visible {
+    outline: none;
+}
+
+.catalog-empty {
+    margin: 0;
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+    color: var(--highlight2);
+}
+
+/* ---- tiles: three squares per row ---- */
+
+.catalog-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--space-md) var(--space-md) var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+}
+
+.catalog-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--elevation1);
+    color: inherit;
+    font: inherit;
+    cursor: grab;
+    box-shadow: 0 0 0 1px transparent;
+    transition: box-shadow 100ms ease;
+}
+
+/* Leva highlights the active control with an accent ring */
+.catalog-tile:hover,
+.catalog-tile:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--accent2);
+}
+
+/* fills the tile; later a model view, for now a colour swatch */
+.catalog-preview {
+    position: absolute;
+    inset: 0;
+    display: block;
+    transition: transform 150ms ease;
+}
+
+.catalog-preview.is-hovered {
+    transform: scale(1.05);
+}
+
+/* name and size, shown only while hovered or focused */
+.catalog-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-sm);
+    background: linear-gradient(to top, #181c20ee, #181c2000);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 120ms ease, transform 120ms ease;
+    pointer-events: none;
+}
+
+.catalog-caption.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+.catalog-caption-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.catalog-caption-size {
+    display: flex;
+    gap: var(--space-xs);
+    font-size: 9px;
+    color: var(--highlight2);
+    white-space: nowrap;
+}
+
+.catalog-dimension {
+    display: inline-flex;
+    gap: 1px;
+}
+
+.catalog-dimension-label {
+    color: var(--highlight1);
+}

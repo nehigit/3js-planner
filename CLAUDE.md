@@ -26,7 +26,11 @@ Every push to `main` triggers `.github/workflows/node.js.yml`, which runs `npm r
 
 ## Architecture
 
-This is a React Three Fiber (R3F) room planner app. `src/main.jsx` mounts a `<Canvas>` inside `<StrictMode>` as the React root, so there is no DOM UI layer yet. Any HTML overlay would need Drei's `<Html>` or a restructure of `main.jsx`. `App.jsx` composes the scene and owns the `room` state: `{ min: [x,y,z], max: [x,y,z] }`, the room's **interior**. Lighting lives in `src/scene/Lights.jsx`.
+This is a React Three Fiber (R3F) room planner app. `src/main.jsx` renders a `.layout` (see `index.css`) holding a `<main class="scene">` that the `<Canvas>` fills and DOM panels that float over it. `src/ui/Catalog.jsx` is the furniture catalog, a panel at the top left styled after the Leva GUI (its theme tokens are CSS variables in `Catalog.css`; keep new DOM UI in that style). Drei's `<Html>` is only for labels anchored in the scene. `App.jsx` composes the scene and owns the `room` state: `{ min: [x,y,z], max: [x,y,z] }`, the room's **interior**. Lighting lives in `src/scene/Lights.jsx`.
+
+**Furniture** (`src/furniture/`): `catalog.js` is a static list of `{ id, category, size: [w,h,d] in metres, color }`. It holds no text: names come from the translations as `furniture.<id>` and `category.<category>`. Placed furniture will reference entries by `id` only and be persisted in `localStorage`; there is no backend and none is planned.
+
+**Translations** (`src/i18n/`): the UI is in English and Polish via i18next (`react-i18next`). `en.json` is the reference with every key; `pl.json` mirrors it (a missing key falls back to English and warns in dev). Never hard-code user-facing text: use `const { t } = useTranslation()` and add the key to both files. Composed sentences are one key with `{{placeholders}}`, not concatenated pieces, because word order differs between the languages. Dimensions always use a dot as the decimal separator in both languages (`formatMetres`). The language is detected from `localStorage` (`language`) then the browser, and switched with the PL/EN button in the catalog title bar; `index.js` also keeps `<html lang>` in sync.
 
 **Camera controls are never passed as props.** `<OrbitControls makeDefault />` registers itself in R3F state, and Drei's `DragControls` pauses it automatically during drags. Its `target` is the initial room's center (`ORBIT_TARGET` in `App.jsx`) and doesn't follow resizes.
 

@@ -1,0 +1,37 @@
+{
+    "language": {
+        "switch": "Przełącz na angielski",
+        "short": "PL"
+    },
+    "catalog": {
+        "title": "Meble",
+        "expand": "Rozwiń katalog",
+        "collapse": "Zwiń katalog",
+        "hide": "Ukryj katalog",
+        "show": "Pokaż katalog",
+        "search": "Szukaj",
+        "searchLabel": "Szukaj mebli",
+        "noMatches": "Brak wyników",
+        "tileLabel": "{{name}}, {{width}} na {{depth}} na {{height}} metra",
+        "dimension": {
+            "width": "S",
+            "depth": "G",
+            "height": "W"
+        }
+    },
+    "category": {
+        "seating": "Siedziska",
+        "tables": "Stoły",
+        "bedroom": "Sypialnia",
+        "storage": "Przechowywanie"
+    },
+    "furniture": {
+        "sofa": "Sofa",
+        "armchair": "Fotel",
+        "chair": "Krzesło",
+        "table": "Stół",
+        "bed": "Łóżko",
+        "wardrobe": "Szafa",
+        "bookshelf": "Regał"
+    }
+}

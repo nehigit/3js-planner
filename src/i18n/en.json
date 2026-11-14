@@ -1,0 +1,37 @@
+{
+    "language": {
+        "switch": "Switch to Polish",
+        "short": "EN"
+    },
+    "catalog": {
+        "title": "Furniture",
+        "expand": "Expand catalog",
+        "collapse": "Collapse catalog",
+        "hide": "Hide catalog",
+        "show": "Show catalog",
+        "search": "Search",
+        "searchLabel": "Search furniture",
+        "noMatches": "No matches",
+        "tileLabel": "{{name}}, {{width}} by {{depth}} by {{height}} metres",
+        "dimension": {
+            "width": "W",
+            "depth": "D",
+            "height": "H"
+        }
+    },
+    "category": {
+        "seating": "Seating",
+        "tables": "Tables",
+        "bedroom": "Bedroom",
+        "storage": "Storage"
+    },
+    "furniture": {
+        "sofa": "Sofa",
+        "armchair": "Armchair",
+        "chair": "Chair",
+        "table": "Table",
+        "bed": "Bed",
+        "wardrobe": "Wardrobe",
+        "bookshelf": "Bookshelf"
+    }
+}

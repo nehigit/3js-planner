@@ -22,10 +22,10 @@ export default function App() {
         {/* makeDefault registers it in R3F state, so DragControls can pause it while dragging */}
         <OrbitControls makeDefault target={ORBIT_TARGET} />
         <axesHelper args={[10]} />
-        <Lights />
 
-        {/* the rest of the scene doesn't wait for the wall textures to load */}
+        {/* the rest of the scene doesn't wait for the HDRI and wall textures to load */}
         <Suspense fallback={null}>
+            <Lights />
             <ResizableRoom room={room} onChange={setRoom} />
         </Suspense>
 
